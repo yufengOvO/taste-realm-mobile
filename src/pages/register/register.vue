@@ -51,22 +51,22 @@
 	const rules = reactive({
 		phone:[{
 			required:true,
-			massage:'请输入电话',
+			message:'请输入电话',
 			trigger:['change','blur']
 		}],
 		username:[{
 			required:true,
-			massage:'请输入电话',
+			message:'请输入电话',
 			trigger:['change','blur']
 		}],
 		password:[{
 			required:true,
-			massage:'请输入电话',
+			message:'请输入电话',
 			trigger:['change','blur']
 		}],
 		passwordConfirm:[{
 			required:true,
-			massage:'请输入电话',
+			message:'请输入电话',
 			trigger:['change','blur']
 		}],
 	})
