@@ -42,7 +42,7 @@
 	})
 	const toRegister = () => {
 		uni.navigateTo({
-			url:'../register/resgister'
+			url:'../register/register'
 		})
 	}
 </script>

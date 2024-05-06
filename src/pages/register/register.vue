@@ -22,12 +22,13 @@
 				已有账号？去登录
 			</view>
 			<!-- 按钮 -->
-			<u-button type="success" :custom-style="customStyle2">注册</u-button>
+			<u-button type="success" :custom-style="customStyle2" @click="commit">注册</u-button>
 		</u-form>
 	</view>
 </template>
 
 <script setup>
+	import {registerApi} from '../../api/user.js'
 	import {
 		ref,
 		reactive
@@ -46,12 +47,58 @@
 	// 用户选择的头像
 	const onChooseAvatar = (e) => {}
 	const avatarUrl = ref('/static/user.jpg')
+	//表单验证
+	const rules = reactive({
+		phone:[{
+			required:true,
+			massage:'请输入电话',
+			trigger:['change','blur']
+		}],
+		username:[{
+			required:true,
+			massage:'请输入电话',
+			trigger:['change','blur']
+		}],
+		password:[{
+			required:true,
+			massage:'请输入电话',
+			trigger:['change','blur']
+		}],
+		passwordConfirm:[{
+			required:true,
+			massage:'请输入电话',
+			trigger:['change','blur']
+		}],
+	})
 	//去登陆
 	const toLogin = () =>{
 		uni.navigateTo({
 			url:"../login/login"
 		})
 	}
+	//导入生命周期函数
+	import{ onReady } from '@dcloudio/uni-app'
+	//表单ref属性
+	const form1 = ref()
+	//提交注册
+	const commit = () => {
+		form1.value.validate(async (valid) =>{
+			if(valid){
+				if(loginModel.passwordConfirm != loginModel.password){
+					uni.showToast({
+						title:'密码和确定密码不一致',
+						icon:'none',
+						duration:2000
+					})
+					return
+				}
+			}
+			let res = await re
+		})
+	}
+	onReady (() =>{
+		form1.value.setRules(rules)
+	})
 </script>
 
 <style lang="scss">
