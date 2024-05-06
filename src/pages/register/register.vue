@@ -93,7 +93,12 @@
 					return
 				}
 			}
-			let res = await re
+			let res = await registerApi(loginModel)
+			if(res && res.code == 200){
+				uni.navigateTo({
+					url:'../login/login'
+				})
+			}
 		})
 	}
 	onReady (() =>{
