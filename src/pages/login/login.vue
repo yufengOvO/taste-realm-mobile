@@ -14,7 +14,7 @@
 			忘记密码
 		</view>
 		<!-- 按钮 -->
-		<u-button :custom-style="customStyle1">登录</u-button>
+		<u-button :custom-style="customStyle1" @click="toCommit">登录</u-button>
 		<u-button type="success" :custom-style="customStyle2" @click="toRegister">注册</u-button>
 	</u-from>
 </template>
@@ -23,10 +23,38 @@
 	import {
 		reactive
 	} from 'vue';
+import { loginApi } from '../../api/user';
 	const loginModel = reactive({
 		username:'',
 		password:''
 	})
+	const toCommit = async () =>{
+		if(!loginModel.username){
+			uni.showToast({
+				title:'请输入账户',
+				icon:'none',
+				duration:2000
+			})
+			return;
+		}
+		if(!loginModel.password){
+			uni.showToast({
+				title:'请输入密码',
+				icon:'none',
+				duration:2000
+			})
+			return
+		}
+		let res = await loginApi(loginModel)
+		if(res && res.code == 200){
+			//储存用户id
+			uni.setStorageSync('userId',res.data.userId)
+			//跳转首页
+			uni.switchTab({
+				url:'../index/index'
+			})
+		}
+	}
 	//登录按钮
 	const customStyle1 = reactive({
 		marginTop:'40px',
