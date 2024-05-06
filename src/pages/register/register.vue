@@ -6,7 +6,7 @@
 	</view>
 	<view class="forms">
 		<u-form :model="loginModel" ref="form1">
-			<u-form-item prop="phone" leftIcon="account-fill" left-icon-style="font-size:24px;color:#ff7670;">
+			<u-form-item prop="phone" leftIcon="phone-fill" left-icon-style="font-size:24px;color:#ff7670;">
 				<u-input placeholder="请输入电话" v-model="loginModel.phone" />
 			</u-form-item>
 			<u-form-item prop="username" leftIcon="account-fill" left-icon-style="font-size:24px;color:#ff7670;">
@@ -15,7 +15,7 @@
 			<u-form-item prop="password" leftIcon="lock" leftIconStyle="font-size:24px;color:#ff7670;">
 				<u-input placeholder="请输入密码" v-model="loginModel.password" />
 			</u-form-item>
-			<u-form-item prop="passwordConfirm" leftIcon="account-fill" left-icon-style="font-size:24px;color:#ff7670;">
+			<u-form-item prop="passwordConfirm" leftIcon="lock" left-icon-style="font-size:24px;color:#ff7670;">
 				<u-input placeholder="请再次输入账户" v-model="loginModel.passwordConfirm" />
 			</u-form-item>
 			<view class="passtext" @click="toLogin">
