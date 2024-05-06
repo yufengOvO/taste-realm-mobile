@@ -18,7 +18,7 @@
 			<u-form-item leftIcon="account-fill" left-icon-style="font-size:24px;color:#ff7670;">
 				<u-input placeholder="请再次输入账户" v-model="loginModel.passwordConfirm" />
 			</u-form-item>
-			<view class="passtext">
+			<view class="passtext" @click="toLogin">
 				已有账号？去登录
 			</view>
 			<!-- 按钮 -->
@@ -46,6 +46,12 @@
 	// 用户选择的头像
 	const onChooseAvatar = (e) => {}
 	const avatarUrl = ref('/static/user.jpg')
+	//去登陆
+	const toLogin = () =>{
+		uni.navigateTo({
+			url:"../login/login"
+		})
+	}
 </script>
 
 <style lang="scss">

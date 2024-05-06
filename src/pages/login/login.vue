@@ -15,7 +15,7 @@
 		</view>
 		<!-- 按钮 -->
 		<u-button :custom-style="customStyle1">登录</u-button>
-		<u-button type="success" :custom-style="customStyle2">z注册</u-button>
+		<u-button type="success" :custom-style="customStyle2" @click="toRegister">注册</u-button>
 	</u-from>
 </template>
 
@@ -40,6 +40,11 @@
 		color:'#fff',
 		width:'100%'
 	})
+	const toRegister = () => {
+		uni.navigateTo({
+			url:'../register/resgister'
+		})
+	}
 </script>
 
 <style lang="scss">
