@@ -20,14 +20,14 @@
 </template>
 
 <script setup>
-	import {
-		reactive
-	} from 'vue';
-import { loginApi } from '../../api/user';
+	import {loginApi} from '../../api/user.js'
+	import {reactive} from 'vue';
+	
 	const loginModel = reactive({
 		username:'',
 		password:''
 	})
+	//登录
 	const toCommit = async () =>{
 		if(!loginModel.username){
 			uni.showToast({
