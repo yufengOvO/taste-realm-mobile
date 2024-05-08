@@ -8,7 +8,7 @@
 				</u-radio-group>
 			</u-form-item>
 		</u-form>
-		<u-form-item prop="goodsname" label="名称:">
+		<u-form-item prop="goodsName" label="名称:">
 			<u-input placeholder="请输入名称" v-model="addModel.goodsName" />
 		</u-form-item>
 		<!-- 分类 -->
@@ -36,7 +36,7 @@
 			<u-input v-model="addModel.addres"></u-input>
 		</u-form-item>
 		<u-form-item prop="image" label="图片:">
-			<u-upload :action="action" :file-list="fileList" @on-remove='onRemove' @on-change="onChange"></u-upload>
+			<u-upload ref="imgRef" :action="action" :file-list="fileList" @on-remove='onRemove' @on-change="onChange"></u-upload>
 		</u-form-item>
 		<u-button :custom-style="customStyle" @click="commit">发布</u-button>
 	</view>
@@ -44,13 +44,20 @@
 </template>
 
 <script setup>
-	import {categorApi} from '../../api/goods.js' 
+	import {categorApi,releaseApi} from '../../api/goods.js' 
 	//导入生命周期函数
 	import{ onReady } from '@dcloudio/uni-app'
 	import {
 		reactive,
 		ref
 	} from 'vue';
+	import http from '../../common/http.js'
+	
+	// 图片上传
+	// const value = ref("")
+	// const action = ref("")
+	// const fileList = ref([])
+	
 	// 表单数据
 	const addModel = reactive({
 		userId: uni.getSkylineInfoSync('userId'),
@@ -65,7 +72,7 @@
 		userName:'',
 		phone:'',
 		wxNum:'',
-		Image:'',
+		image:'',
 		addres:''
 	})
 	const show = ref(false)
@@ -75,18 +82,20 @@
 	}
 	//物品发布类型
 	const list = [{
+			value:"0",
 			name: '闲置',
 			disabled: false
 		},
 		{
+			value:"1",
 			name: '求购',
 			disabled: false
 		},
 	]
 	//图片上传
-	const value = ref('')
-	const action = ref('')
-	const fileList = ref([])
+	// const value = ref('')
+	// const action = ref('')
+	// const fileList = ref([])
 	// 发布按钮
 	const customStyle = reactive({
 		background: '#00cc33',
@@ -115,6 +124,126 @@
 		addModel.categoryName = e[0].label;
 		addModel.categoryId  = e[0].value;
 	}
+	// 图片上传路径
+	const action = ref(http.baseUrl+"/api/upload/uploadImage")
+	// 存储图片路径
+	const imgUrl = ref([])
+	// 图片上传触发
+	const onChange = (res,index,lists,name) => {
+		// console.log(res.data)
+		let result = JSON.parse(res.data)
+		imgUrl.value.push(http.baseUrl + result.data)
+		// console.log(imgUrl.value)
+		// 把数组里面的图片转为逗号分隔的字符的一行数据
+		let url = ''
+		for(let k =0; k < imgUrl.value.length; k++){
+			url = url + imgUrl.value[k] + ','
+		}
+		addModel.image = url.substring(0,url.lastIndexOf(','))
+	}
+	
+	// 删除图片
+	const onRemove = (index) => {
+		imgUrl.value.splice(index,1)
+		let url = ''
+		for(let k =0; k < imgUrl.value.length; k++){
+			url = url + imgUrl.value[k] + ','
+		}
+		addModel.image = url.substring(0,url.lastIndexOf(','))
+	}
+	
+	// 闲置求购类型选择
+	const radioChange = (e) =>{
+		for(let i =0; i < list.length; i++){
+			if(list[i].name == e ){
+				addModel.type = list[i].value;
+			}
+		}
+	}
+	
+	// 获取表单
+	const form1 = ref()
+	const imgRef = ref()
+	
+	// 表单验证规则
+	const rules = reactive({
+		name: [{
+			required:true,
+			message:"请选择类型",
+			trigger:['change','blur']
+		}],
+		goodsName: [{
+			required:true,
+			message:"请填写名称",
+			trigger:['change','blur']
+		}],
+		goodsDesc: [{
+			required:true,
+			message:"请填写描述",
+			trigger:['change','blur']
+		}],
+		goodsPrice: [{
+			required:true,
+			message:"请填写价格",
+			trigger:['change','blur']
+		}],
+		userName: [{
+			required:true,
+			message:"请填写姓名",
+			trigger:['change','blur']
+		}],
+		phone: [{
+			required:true,
+			message:"请填写电话",
+			trigger:['change','blur']
+		}],
+		wxNum: [{
+			required:true,
+			message:"请填写微信号",
+			trigger:['change','blur']
+		}],
+		addres: [{
+			required:true,
+			message:"请填写发布/求购地址",
+			trigger:['change','blur']
+		}]
+	})
+	
+	// 提交表单
+	const commit = () =>{
+		// console.log(addModel)
+		form1.value.validata(async(valid)=>{
+			let res = await releaseApi(addModel)
+			if (res && res.code == 200) {
+				uni.showToast({
+					title:'商品发布成功',
+					duration:2000
+				})
+				if (addModel.type == '0') {
+					uni.switchTab({
+						url:'../unused/unused'
+					})
+				} else{
+					uni.switchTab({
+						url:'../buy/buy'
+					})
+				}
+				// 清空数据
+				form1.value.resetFields()
+				imgUrl.value=[]
+				addModel.image='';
+				imgRef.value.clear()
+				return;
+			}
+		})
+	}
+	
+	// 生命周期函数
+	onReady(()=>{
+		// 设置表单验证规则
+		form1.value.setRules(rules);
+		getSelectList()
+	})
 </script>
 
 <style lang="scss" scoped>

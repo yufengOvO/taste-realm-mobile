@@ -1,6 +1,6 @@
 {
     "name" : "demo",
-    "appid" : "__UNI__7D93380",
+    "appid" : "__UNI__9BF5502",
     "description" : "",
     "versionName" : "1.0.0",
     "versionCode" : "100",
@@ -50,7 +50,7 @@
     "quickapp" : {},
     /* 小程序特有相关 */
     "mp-weixin" : {
-        "appid" : "wxab68a6bf829e46e1",
+        "appid" : "wx6ea399e9621535f1",
         "setting" : {
             "urlCheck" : false
         },
