@@ -6,5 +6,5 @@ export const categorApi = (parm) =>{
 
 // 发布页面发布商品
 export const releaseApi = (parm) => {
-	return http.post('api/goods/release',parm)
+	return http.post('/api/goods/release',parm)
 }

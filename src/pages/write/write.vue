@@ -212,7 +212,7 @@
 	// 提交表单
 	const commit = () =>{
 		// console.log(addModel)
-		form1.value.validata(async(valid)=>{
+		form1.value.validate(async(valid)=>{
 			let res = await releaseApi(addModel)
 			if (res && res.code == 200) {
 				uni.showToast({
