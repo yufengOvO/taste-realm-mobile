@@ -1,10 +1,10 @@
 <template>
 	<view class="u-wrap u-p-1-20 u-p-r-20">
 		<u-form :model="addModel" ref="form1">
-			<u-form-item prop="name" label="类型">
-				<u-radio-group v-model="addModel.name">
-					<u-radio activeColor="#00cc33" v-for="(item,index) in list" :key="index" :name="item.name"
-						:disabled="item.disabled">{{item.name}}</u-radio>
+			<u-form-item prop="type" label="类型">
+				<u-radio-group v-model="addModel.type">
+					<u-radio activeColor="#00cc33" v-for="(item,index) in list" :key="index" :name="item.value"
+						:disabled="item.disabled">{{item.type}}</u-radio>
 				</u-radio-group>
 			</u-form-item>
 			<u-form-item prop="goodsName" label="名称:">
@@ -64,7 +64,6 @@
 	// 表单数据
 	const addModel = reactive({
 		userId: uni.getStorageSync('userId'),
-		name: '',
 		type: '',
 		goodsName: '',
 		categoryId: '',
@@ -85,12 +84,12 @@
 	//物品发布类型
 	const list = [{
 			value: "0",
-			name: '闲置',
+			type: '闲置',
 			disabled: false
 		},
 		{
 			value: "1",
-			name: '求购',
+			type: '求购',
 			disabled: false
 		},
 	]
@@ -166,7 +165,7 @@
 
 	// 表单验证规则
 	const rules = reactive({
-		name: [{
+		type: [{
 			required: true,
 			message: "请选择类型",
 			trigger: ['change', 'blur']
@@ -218,14 +217,15 @@
 					title: '商品发布成功',
 					duration: 2000
 				})
+				console.log(addModel)
 				if (addModel.type == '0') {
-					uni.switchTab({
-						url: '../unused/unused'
-					})
+					// uni.switchTab({
+					// 	url: '../unused/unused'
+					// })
 				} else {
-					uni.switchTab({
-						url: '../buy/buy'
-					})
+					// uni.switchTab({
+					// 	url: '../buy/buy'
+					// })
 				}
 				// 清空数据
 				form1.value.resetFields()
