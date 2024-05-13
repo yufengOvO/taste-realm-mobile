@@ -219,13 +219,13 @@
 				})
 				console.log(addModel)
 				if (addModel.type == '0') {
-					// uni.switchTab({
-					// 	url: '../unused/unused'
-					// })
+					uni.switchTab({
+						url: '../unused/unused'
+					})
 				} else {
-					// uni.switchTab({
-					// 	url: '../buy/buy'
-					// })
+					uni.switchTab({
+						url: '../buy/buy'
+					})
 				}
 				// 清空数据
 				form1.value.resetFields()
