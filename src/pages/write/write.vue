@@ -1,6 +1,6 @@
 <template>
 	<view class="u-wrap u-p-1-20 u-p-r-20">
-		<u-form :model="addModel" ref="form1">
+		<u-form :model="addModel" ref="form1" >
 			<u-form-item prop="type" label="类型">
 				<u-radio-group v-model="addModel.type">
 					<u-radio activeColor="#00cc33" v-for="(item,index) in list" :key="index" :name="item.value"
@@ -200,7 +200,7 @@
 			message: "请填写微信号",
 			trigger: ['change', 'blur']
 		}],
-		addres: [{
+		address: [{
 			required: true,
 			message: "请填写发布/求购地址",
 			trigger: ['change', 'blur']
@@ -211,6 +211,7 @@
 	const commit = () => {
 		// console.log(addModel)
 		form1.value.validate(async (valid) => {
+		if(valid){
 			let res = await releaseApi(addModel)
 			if (res && res.code == 200) {
 				uni.showToast({
@@ -234,13 +235,21 @@
 				imgRef.value.clear()
 				return;
 			}
-		})
+		}else{
+			uni.showToast({
+				title: '请填写表单',
+				duration: 2000
+			})
+		}
+		}
+		)
 	}
 
 	// 生命周期函数
 	onReady(() => {
 		// 设置表单验证规则
 		form1.value.setRules(rules);
+		
 		getSelectList()
 	})
 </script>
