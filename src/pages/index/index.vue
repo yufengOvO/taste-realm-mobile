@@ -1,188 +1,412 @@
 <template>
-	<view>
-		<swiper class="swiper" circular :indicator-dots="indicatorDots" :autoplay="autoplay" :interval="interval"
-			:duration="duration">
-			<swiper-item v-for="(item,index) in swiperList">
-				<image :src="item.image" mode=""></image>
-			</swiper-item>
-		</swiper>
-	</view>
-	<!-- 搜索框 -->
-	<view class="tab-strickt">
-		<u-search placeholder="日照香炉生紫烟" v-model="keyword" bg-color="#fff" margin="8px" style="flex-grow: 1;"
-			:show-action="true" action-text="搜索" :animation="true"></u-search>
-	</view>
-	<!-- 瀑布流 -->
-	<view class="wrap">
-		<u-waterfall v-model="flowList" ref="uWaterfall1">
-			<template v-slot:left="{leftList}">
-				<view class="demo-warter" v-for="(item, index) in leftList" :key="index">
-					<!-- 警告：微信小程序中需要hx2.8.11版本才支持在template中结合其他组件，比如下方的lazy-load组件 -->
-					<u-lazy-load threshold="-450" border-radius="10" :image="item.image" :index="index"></u-lazy-load>
-					<view class="demo-title">
-						{{item.title}}
-					</view>
-					<view class="demo-price">
-						{{item.price}}元
-					</view>
-					<view class="demo-tag">
-						<view class="demo-tag-owner">
-							自营
+
+	<view class="container">
+		<!-- 顶部tab -->
+		<view class="tab-bar">
+			<view class="tab-item" :class="{ 'active': activeIndex === 0 }" @tap="handleTabClick(0)">
+				<text class="tab-text">挑菜</text>
+			</view>
+			<view class="tab-item" :class="{ 'active': activeIndex === 1 }" @tap="handleTabClick(1)">
+				<text class="tab-text">推荐</text>
+			</view>
+			<view class="tab-item" :class="{ 'active': activeIndex === 2 }" @tap="handleTabClick(2)">
+				<text class="tab-text">帮选</text>
+			</view>
+		</view>
+
+		<!-- 推荐 -->
+		<view v-if="activeIndex == 1">
+			<!-- 轮播图 -->
+			<view>
+				<swiper class="swiper" :indicator-dots="indicatorDots" :autoplay="autoplay" :interval="interval"
+					:duration="duration">
+					<swiper-item v-for="(item,index) in swiperList">
+						<image class="swiper_image" :src="item.images" mode=""></image>
+					</swiper-item>
+				</swiper>
+			</view>
+
+			<!-- 搜索框 -->
+			<view class="tab-strickt" @click="search">
+				<u-search v-model="keywords" @change="searchList" bg-color="#e7e7e7" margin="8px" style="flex-grow: 1;"
+					:show-action="true" action-text="搜索" :animation="true" :focus="focus"></u-search>
+			</view>
+
+			<!-- 美食横向列表 -->
+			<view class="text_top">
+				<text>经典美食</text>
+			</view>
+			<scroll-view class="scroll-container" scroll-x="true">
+				<view class="food_box" v-for="(item, index) in classicalList"
+					:style="{ backgroundImage: 'url(' + item.image + ')' }">
+					<view class="food_overlay">
+						<view class="demo-title1">
+							{{item.goodsName}}
 						</view>
-						<view class="demo-tag-text">
-							放心购
+						<view class="demo-title2">
+							{{item.goodsPrice}}元
 						</view>
 					</view>
-					<view class="demo-shop">
-						{{item.shop}}
-					</view>
-					<u-icon name="close-circle-fill" color="#fa3534" size="34" class="u-close"
-						@click="remove(item.id)"></u-icon>
 				</view>
-			</template>
-			<template v-slot:right="{rightList}">
-				<view class="demo-warter" v-for="(item, index) in rightList" :key="index">
-					<u-lazy-load threshold="-450" border-radius="10" :image="item.image" :index="index"></u-lazy-load>
-					<view class="demo-title">
-						{{item.title}}
-					</view>
-					<view class="demo-price">
-						{{item.price}}元
-					</view>
-					<view class="demo-tag">
-						<view class="demo-tag-owner">
-							自营
+			</scroll-view>
+
+
+
+			<!-- 瀑布流 -->
+			<view class="text_top">
+				<text>推荐美食</text>
+			</view>
+			<view class="wrap" @click="detail">
+				<u-waterfall v-if="flowList.length > 0" v-model="flowList" ref="uWaterfall1" >
+					<template v-slot:left="{leftList}" >
+						<view class="demo-warter-left" v-for="(item, index) in leftList" :key="index">
+							<!-- 警告：微信小程序中需要hx2.8.11版本才支持在template中结合其他组件，比如下方的lazy-load组件 -->
+							<u-lazy-load threshold="-450" border-radius="15" :image="item.image" :index="index">
+							</u-lazy-load>
+							<view class="demo-overlay">
+								<view class="demo-title1">
+									{{item.goodsName}}
+								</view>
+								<view class="demo-title2">
+									{{item.goodsPrice}}元
+								</view>
+								<u-icon name="heart" color="#ffffff" size="42" class="u-close" @click="remove(item.id)">
+								</u-icon>
+							</view>
 						</view>
-						<view class="demo-tag-text">
-							放心购
+					</template>
+					<template v-slot:right="{rightList}">
+						<view class="demo-warter-right" v-for="(item, index) in rightList" :key="index">
+							<u-lazy-load threshold="-450" border-radius="15" :image="item.image" :index="index">
+							</u-lazy-load>
+							<view class="demo-overlay">
+								<view class="demo-title1">
+									{{item.goodsName}}
+								</view>
+								<view class="demo-title2">
+									{{item.goodsPrice}}元
+								</view>
+								<u-icon name="heart" color="#ffffff" size="42" class="u-close" @click="remove(item.id)">
+								</u-icon>
+							</view>
 						</view>
-					</view>
-					<view class="demo-shop">
-						{{item.shop}}
-					</view>
-					<u-icon name="close-circle-fill" color="#fa3534" size="34" class="u-close"
-						@click="remove(item.id)"></u-icon>
+					</template>
+				</u-waterfall>
+				<u-loadmore bg-color="rgb(240, 240, 240)" :status="loadStatus" @loadmore="addRandomData"></u-loadmore>
+			</view>
+		</view>
+
+		<!-- 挑菜 -->
+		<view v-if="activeIndex == 0">
+			<!-- 蔬菜 -->
+			<!-- 标题 -->
+			<view class="underline-container">
+				<view class="underline"></view>
+				<view class="underline-text">蔬菜</view>
+				<view class="underline"></view>
+			</view>
+			<!-- 蔬菜按钮 -->
+			<view class="button_box">
+				<button class="btn1">蔬菜</button>
+				<button class="btn1">蔬菜</button>
+				<button class="btn1">蔬菜</button>
+				<button class="btn1">蔬菜</button>
+				<button class="btn1">蔬菜</button>
+			</view>
+
+			<!-- 肉类 -->
+			<view class="underline-container">
+				<view class="underline"></view>
+				<view class="underline-text">肉类</view>
+				<view class="underline"></view>
+			</view>
+			<!-- 肉类按钮 -->
+			<view class="button_box">
+				<button class="btn2">蔬菜</button>
+				<button class="btn2">蔬菜</button>
+				<button class="btn2">蔬菜</button>
+				<button class="btn2">蔬菜</button>
+				<button class="btn2">蔬菜</button>
+			</view>
+
+			<!-- 菜品 -->
+			<view class="underline-container">
+				<view class="underline"></view>
+				<view class="underline-text">菜品</view>
+				<view class="underline"></view>
+			</view>
+			<!-- 菜品列表 -->
+			<view class="wrap">
+				<u-waterfall v-model="flowListc" ref="uWaterfall1">
+					<template v-slot:left="{leftList}">
+						<view class="demo-warter-left" v-for="(item, index) in leftList" :key="index">
+							<!-- 警告：微信小程序中需要hx2.8.11版本才支持在template中结合其他组件，比如下方的lazy-load组件 -->
+							<u-lazy-load threshold="-450" border-radius="15" :image="item.image" :index="index">
+							</u-lazy-load>
+							<view class="demo-overlay">
+								<view class="demo-title1">
+									好吃不长肉~
+								</view>
+								<view class="demo-title2">
+									家常菜
+								</view>
+								<u-icon name="heart" color="#ffffff" size="42" class="u-close" @click="remove(item.id)">
+								</u-icon>
+							</view>
+						</view>
+					</template>
+					<template v-slot:right="{rightList}">
+						<view class="demo-warter-right" v-for="(item, index) in rightList" :key="index">
+							<u-lazy-load threshold="-450" border-radius="15" :image="item.image" :index="index">
+							</u-lazy-load>
+							<view class="demo-overlay">
+								<view class="demo-title1">
+									好吃不长肉~
+								</view>
+								<view class="demo-title2">
+									家常菜
+								</view>
+								<u-icon name="heart" color="#ffffff" size="42" class="u-close" @click="remove(item.id)">
+								</u-icon>
+							</view>
+						</view>
+					</template>
+				</u-waterfall>
+				<u-loadmore bg-color="rgb(240, 240, 240)" :status="loadStatus" @loadmore="addRandomData"></u-loadmore>
+			</view>
+
+
+
+
+		</view>
+
+		<!-- 帮选 -->
+		<view v-if="activeIndex == 2">
+			<view class="bx-text_top">
+				<text>早餐榜</text>
+			</view>
+			<scroll-view class="bx-scroll-container" scroll-x="true">
+				<view class="bx-food_box" v-for="(item,index) in swiperList">
+					<view class="bx-food-img" :style="{ backgroundImage: 'url(' + item.image + ')' }"></view>
+					<view class="bx-food-text">·烧鸡蛋豆腐·</view>
 				</view>
-			</template>
-		</u-waterfall>
-		<u-loadmore bg-color="rgb(240, 240, 240)" :status="loadStatus" @loadmore="addRandomData"></u-loadmore>
+			</scroll-view>
+
+			<view class="bx-text_top">
+				<text>午餐榜</text>
+			</view>
+			<scroll-view class="bx-scroll-container" scroll-x="true">
+				<view class="bx-food_box" v-for="(item,index) in swiperList">
+					<view class="bx-food-img" :style="{ backgroundImage: 'url(' + item.image + ')' }"></view>
+					<view class="bx-food-text">·烧鸡蛋豆腐·</view>
+				</view>
+			</scroll-view>
+
+			<view class="bx-text_top">
+				<text>晚餐榜</text>
+			</view>
+			<scroll-view class="bx-scroll-container" scroll-x="true">
+				<view class="bx-food_box" v-for="(item,index) in swiperList">
+					<view class="bx-food-img" :style="{ backgroundImage: 'url(' + item.image + ')' }"></view>
+					<view class="bx-food-text">·烧鸡蛋豆腐·</view>
+				</view>
+			</scroll-view>
+		</view>
 	</view>
+
+
+
 </template>
 
 <script setup>
 	import {
 		ref
 	} from 'vue';
+	// 引入轮播图和推荐列表api
+	import {
+		getIndexListApi,
+		getSwiperListApi
+	} from '../../api/index.js'
+	import {
+		onReady,
+		onReachBottom
+	} from '@dcloudio/uni-app';
+
+
 	const indicatorDots = ref(true) //小圆点
 	const autoplay = ref(true) //自动切换
 	const interval = ref(3000) //切换时间
-
-	const swiperList = ref([{
-			image: "/static/11.jpg"
-		},
-		{
-			image: "/static/44.jpg"
-		},
-		{
-			image: "/static/66.jpeg"
+	const activeIndex = ref(1) // 当前选中的标签索引  
+	// 轮播图数据
+	const swiperList = ref([])
+	// 读取轮播图数据
+	const getSwiperList = async () => {
+		let res = await getSwiperListApi({
+			currentPage: currentPage.value,
+			pageSize: pageSize.value,
+		})
+		console.log(res)
+		if (res && res.code == 200) {
+			swiperList.value = flowList.value.concat(res.data.records);
+			loadStatus.value = 'loadmore';
 		}
-	])
+
+	}
+//经典美食
+	const classicalList = ref([])
+	// 经典美食
+	const getClassicalList = async () => {
+		let res = await getIndexListApi({ // 使用您的API函数名  
+			currentPage: 2,
+			pageSize: 4,
+		});
+		console.log(res)
+		if (res && res.code == 200) {
+			classicalList.value = classicalList.value.concat(res.data.records);
+			console.log(classicalList.value);
+		}
+	};
+	
+	
+	
+	
 	//瀑布流
-	const flowList = ref(
-		[{
-				price: 35,
-				title: '北国风光，千里冰封，万里雪飘',
-				shop: '李白杜甫白居易旗舰店',
-				image: 'http://pic.sc.chinaz.com/Files/pic/pic9/202002/zzpic23327_s.jpg',
-			},
-			{
-				price: 75,
-				title: '望长城内外，惟余莽莽',
-				shop: '李白杜甫白居易旗舰店',
-				image: 'http://pic.sc.chinaz.com/Files/pic/pic9/202002/zzpic23325_s.jpg',
-			},
-			{
-				price: 385,
-				title: '大河上下，顿失滔滔',
-				shop: '李白杜甫白居易旗舰店',
-				image: 'http://pic2.sc.chinaz.com/Files/pic/pic9/202002/hpic2119_s.jpg',
-			},
-			{
-				price: 784,
-				title: '欲与天公试比高',
-				shop: '李白杜甫白居易旗舰店',
-				image: 'http://pic2.sc.chinaz.com/Files/pic/pic9/202002/zzpic23369_s.jpg',
-			},
-			{
-				price: 7891,
-				title: '须晴日，看红装素裹，分外妖娆',
-				shop: '李白杜甫白居易旗舰店',
-				image: 'http://pic2.sc.chinaz.com/Files/pic/pic9/202002/hpic2130_s.jpg',
-			},
-			{
-				price: 2341,
-				shop: '李白杜甫白居易旗舰店',
-				title: '江山如此多娇，引无数英雄竞折腰',
-				image: 'http://pic1.sc.chinaz.com/Files/pic/pic9/202002/zzpic23346_s.jpg',
-			},
-			{
-				price: 661,
-				shop: '李白杜甫白居易旗舰店',
-				title: '惜秦皇汉武，略输文采',
-				image: 'http://pic1.sc.chinaz.com/Files/pic/pic9/202002/zzpic23344_s.jpg',
-			},
-			{
-				price: 1654,
-				title: '唐宗宋祖，稍逊风骚',
-				shop: '李白杜甫白居易旗舰店',
-				image: 'http://pic1.sc.chinaz.com/Files/pic/pic9/202002/zzpic23343_s.jpg',
-			},
-			{
-				price: 1678,
-				title: '一代天骄，成吉思汗',
-				shop: '李白杜甫白居易旗舰店',
-				image: 'http://pic1.sc.chinaz.com/Files/pic/pic9/202002/zzpic23343_s.jpg',
-			},
-			{
-				price: 924,
-				title: '只识弯弓射大雕',
-				shop: '李白杜甫白居易旗舰店',
-				image: 'http://pic1.sc.chinaz.com/Files/pic/pic9/202002/zzpic23343_s.jpg',
-			},
-			{
-				price: 8243,
-				title: '俱往矣，数风流人物，还看今朝',
-				shop: '李白杜甫白居易旗舰店',
-				image: 'http://pic1.sc.chinaz.com/Files/pic/pic9/202002/zzpic23343_s.jpg',
-			},
-		]
-	)
+	const flowList = ref([])
+	// 加载更多
+	const loadStatus = ref()
+	//点击参数查询
+	const currentPage = ref(1) //页数
+	const pageSize = ref(5) //每页查询条数
+	const pages = ref(0) //查询关键词
+	const keywords = ref('') //总页数
+	//读取推荐到首页的商品数据
+	const getIndexList = async () => {
+		let res = await getIndexListApi({
+			currentPage: currentPage.value,
+			pageSize: pageSize.value,
+			keywords: keywords.value
+		})
+		console.log(res);
+		if (res && res.code == 200) {
+			pages.value = res.data.pages //设置总页数
+			flowList.value = flowList.value.concat(res.data.records);
+			loadStatus.value = 'loadmore';
+		}
+	}
+
+	
+
+	// 瀑布流表单对象
+	const uWaterfall1 = ref()
+	
+	// 搜索跳转页面
+	const search =()=>{
+		uni.navigateTo({
+			url: '../search/search'
+		})
+	}
+	// 搜索详情页面
+	const detail =()=>{
+		uni.navigateTo({
+			url: '../menu/menu'
+		})
+	}
+	// 搜索功能
+	// const searchList = () => {
+	// 	uWaterfall1.value.clear() //清空当前瀑布流
+	// 	currentPage.value = 1; //当前页
+	// 	loadStatus.value = 'loading'; //加载更多
+	// 	getIndexList() //根据关键词查询瀑布流
+	// }
+	
+	
+	// 触底加载数据
+	onReachBottom(() => {
+		console.log('触底加载更多数据')
+		// 如果当前页数大于等于总页数，状态修改为没有更多了，不在继续往下执行代码
+		if (currentPage.value >= pages.value) {
+			loadStatus.value = 'nomore';
+			return;
+		};
+		loadStatus.value = 'loding'; //状态改为加载中
+		currentPage.value = ++currentPage.value
+		// 修改页面后重新获取数据
+		getIndexList()
+	})
+
+
+	onReady(() => {
+		getSwiperList() //轮播图数据
+		getIndexList() //推荐首页数据
+		getClassicalList() //获取首页数据
+
+	})
+
+	const handleTabClick = (index) => {
+		console.log("点击了")
+		activeIndex.value = index;
+
+	}
 </script>
 
 <style lang="scss">
+	// 轮播图
+	.swiper {
+		width: 710rpx;
+		height: 400rpx;
+		margin-right: 20rpx;
+		margin-left: 20rpx;
+		border-radius: 15rpx;
+		// background-color: aqua;
+		background-size: cover;
+	}
+
+	.swiper_image {
+		width: 710rpx;
+		height: 400rpx;
+		border-radius: 15rpx;
+		background-size: cover;
+	}
+
 	// 搜索框样式
 	.tab-strickt {
 		position: sticky;
 		z-index: 99;
-		top: 0;
+		top: 50px;
 		left: 0;
 		display: flex;
 		align-items: center;
-		background-color: #f2f2f2;
+		background-color: #ffffff;
 	}
 
 	//瀑布流
-	.demo-warter {
-		border-radius: 8px;
-		margin: 5px;
+	.demo-warter-right {
+		border-radius: 15px;
+		margin-top: 10px;
+		margin-left: 9rpx;
+		margin-right: 18rpx;
+		margin-bottom: 8rpx;
+		// padding: 8px;
 		background-color: #ffffff;
-		padding: 8px;
+
+		position: relative;
+	}
+
+	.demo-warter-left {
+		border-radius: 15px;
+		margin-top: 10px;
+		margin-left: 18rpx;
+		margin-right: 9rpx;
+		margin-bottom: 5rpx;
+		// padding: 8px;
+		background-color: #ffffff;
+
 		position: relative;
 	}
 
 	.u-close {
 		position: absolute;
-		top: 32rpx;
+		bottom: 32rpx;
 		right: 32rpx;
 	}
 
@@ -191,10 +415,32 @@
 		border-radius: 4px;
 	}
 
-	.demo-title {
-		font-size: 30rpx;
-		margin-top: 5px;
-		color: $u-main-color;
+	.demo-overlay {
+		border-radius: 15px;
+		position: absolute;
+		top: 0rpx;
+		left: 0rpx;
+		width: 100%;
+		height: 100%;
+		background-color: rgba(0, 0, 0, 0.1);
+	}
+
+	.demo-title1 {
+		color: white;
+		padding-left: 20rpx;
+		padding-top: 20rpx;
+		font-size: 28rpx;
+		letter-spacing: 2px;
+		font-weight: 500;
+	}
+
+	.demo-title2 {
+		padding-top: 8rpx;
+		padding-left: 20rpx;
+		color: white;
+		font-size: 38rpx;
+		letter-spacing: 2px;
+		font-weight: 600;
 	}
 
 	.demo-tag {
@@ -236,5 +482,228 @@
 		font-size: 22rpx;
 		color: $u-tips-color;
 		margin-top: 5px;
+	}
+
+	.container {
+		display: flex;
+		flex-direction: column;
+		height: 750;
+	}
+
+	.tab-bar {
+		position: sticky;
+		z-index: 99;
+		top: 0px;
+		left: 0;
+		display: flex;
+		justify-content: space-around;
+		align-items: center;
+		height: 50px;
+		/* 你可以根据需要调整高度 */
+		background-color: #fff;
+		/* 非选中时的背景色 */
+		font-weight: 600;
+	}
+
+	.tab-item {
+		display: flex;
+		justify-content: center;
+		align-items: center;
+		width: 70px;
+		/* 每个按钮的宽度，可以根据需要调整 */
+		height: 30px;
+		/* 每个按钮的高度，设置为椭圆形的高度 */
+		border-radius: 20px;
+		/* 设置为高度的一半以实现椭圆形效果 */
+		// margin: 0 5px;
+	}
+
+	.tab-item.active {
+		background-color: #000;
+		/* 选中时的背景色 */
+	}
+
+	.tab-text {
+		color: #000;
+		/* 非选中时的文字颜色 */
+	}
+
+	.tab-item.active .tab-text {
+		color: #fff;
+		/* 选中时的文字颜色 */
+	}
+
+	// 美食横向列表
+	.scroll-container {
+		margin-top: 10rpx;
+		display: flex;
+		width: 100%;
+		height: 150px;
+		/* 设置 scroll-view 的高度 */
+		// background-color: #f0f0f0;
+		white-space: nowrap;
+		/* 确保子元素不换行 */
+	}
+
+	.food_box {
+		display: inline-block;
+		width: 260px;
+		height: 100%;
+		border-radius: 20rpx;
+		// background-color: #13afa5;
+		margin-left: 20px;
+		// background-image: url("https://cdn.pixabay.com/photo/2022/06/07/20/52/curry-7249247_1280.jpg");
+		background-size: cover;
+
+	}
+
+	.text_top {
+		margin-top: 30rpx;
+		margin-left: 25rpx;
+		margin-bottom: 20rpx;
+		font-weight: 600;
+		font-size: 30rpx;
+		letter-spacing: 2px;
+	}
+
+	.food_text1 {
+		color: white;
+		padding-left: 20rpx;
+		// background-color: aqua;
+		width: 50rpx;
+		height: 50rpx;
+		padding-top: 190rpx;
+		letter-spacing: 2px; //文字间距
+		font-weight: 600;
+	}
+
+	.food_text2 {
+		color: white;
+		padding-left: 20rpx;
+		padding-top: 40rpx;
+		font-size: 38rpx;
+		letter-spacing: 2px;
+		font-weight: 500;
+	}
+
+	.food_overlay {
+		width: 260px;
+		height: 100%;
+		border-radius: 20rpx;
+		/* 设置蒙版颜色及透明度 */
+		background-color: rgba(0, 0, 0, 0.1);
+	}
+
+	// 挑菜
+	// 下划线
+	.underline-container {
+		margin-top: 25rpx;
+		display: flex;
+		align-items: center;
+	}
+
+	.underline-text {
+
+		background-color: white;
+		/* 如果背景不是白色，需要设置这个 */
+		z-index: 1;
+		/* 确保文字在下划线之上 */
+		position: relative;
+		letter-spacing: 2px;
+		font-weight: 600;
+	}
+
+	.underline {
+		flex: 1;
+		height: 1rpx;
+		/* 下划线高度 */
+		background-color: #b2b2b2;
+		/* 下划线颜色 */
+		margin: 20rpx;
+	}
+
+	// 按钮样式
+	.button_box {
+		display: flex;
+		flex-wrap: wrap; //自动换行
+		flex-direction: row;
+		width: 750rpx;
+		// background-color: aqua;
+	}
+
+	.btn1 {
+		font-size: 25rpx;
+		border-radius: 40rpx;
+		width: 180rpx;
+		height: 60rpx;
+		margin-top: 25rpx;
+		margin-left: 35rpx;
+		margin-right: 35rpx;
+		background-color: #a4ff8f;
+		letter-spacing: 5px;
+		font-weight: 600;
+	}
+
+	.btn2 {
+		font-size: 25rpx;
+		border-radius: 40rpx;
+		width: 180rpx;
+		height: 60rpx;
+		margin-top: 25rpx;
+		margin-left: 35rpx;
+		margin-right: 35rpx;
+		background-color: #ff9d6c;
+		letter-spacing: 5px;
+		font-weight: 600;
+	}
+
+	// 菜品列表
+
+
+	// 帮选
+	.bx-text_top {
+		margin-top: 30rpx;
+		margin-left: 25rpx;
+		margin-bottom: 30rpx;
+		font-weight: 600;
+		font-size: 32rpx;
+		letter-spacing: 3px;
+	}
+
+	.bx-scroll-container {
+		margin-top: 10rpx;
+		display: flex;
+		width: 100%;
+		height: 380rpx;
+		/* 设置 scroll-view 的高度 */
+		// background-color: #1ea0f0;
+		white-space: nowrap;
+		/* 确保子元素不换行 */
+	}
+
+	.bx-food_box {
+		display: inline-block;
+		width: 300rpx;
+		height: 380rpx;
+		border-radius: 20rpx;
+		// background-color: #13afa5;
+		margin-left: 25rpx;
+		// background-image: url("https://cdn.pixabay.com/photo/2022/06/07/20/52/curry-7249247_1280.jpg");
+		background-size: cover;
+	}
+
+	.bx-food-img {
+		width: 300rpx;
+		height: 300rpx;
+		border-radius: 20rpx;
+		// background-color: #e7ff0c;
+		background-size: cover;
+	}
+
+	.bx-food-text {
+		margin-top: 15rpx;
+		font-size: 28rpx;
+		font-weight: 600;
+		text-align: center;
 	}
 </style>

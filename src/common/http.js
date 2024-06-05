@@ -1,5 +1,5 @@
 // 后端根路径
-const baseUrl = 'http://localhost:8089';
+const baseUrl = 'http://localhost:8088';
 
 const http = (options = {}) => {
     return new Promise((resolve, reject) => {

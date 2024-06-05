@@ -1,70 +1,87 @@
 <template>
 	<view>
 		<!-- 搜索框 -->
-		<view class="">
-			<u-search placeholder="日照香炉生紫烟" v-model="keyword" bg-color="#fff" margin="8px" style="flex-grow: 1;"
+		<view class="tab-strickt">
+			<u-search placeholder="日照香炉生紫烟" v-model="keyword" bg-color="#e7e7e7" margin="8px" style="flex-grow: 1;"
 				:show-action="true" action-text="搜索" :animation="true"></u-search>
 		</view>
-		<!-- 分类 -->
-		<view class="tab-strickt">
-			<!--  is-scroll是否可以滚动, name列表里面的值,-->
-			 <u-tabs :list="list" :is-scroll="true" v-model="current" @change="change" active-color="#33cc00" name="cata_name" count="cate_count"></u-tabs>
-		</view>
-		<!-- 瀑布流 -->
-		<view class="wrap">
-			<u-waterfall v-model="flowList" ref="uWaterfall1">
-				<template v-slot:left="{leftList}">
-					<view class="demo-warter" v-for="(item, index) in leftList" :key="index">
-						<!-- 警告：微信小程序中需要hx2.8.11版本才支持在template中结合其他组件，比如下方的lazy-load组件 -->
-						<u-lazy-load threshold="-450" border-radius="10" :image="item.image" :index="index"></u-lazy-load>
-						<view class="demo-title">
-							{{item.title}}
-						</view>
-						<view class="demo-price">
-							{{item.price}}元
-						</view>
-						<view class="demo-tag">
-							<view class="demo-tag-owner">
-								自营
-							</view>
-							<view class="demo-tag-text">
-								放心购
-							</view>
-						</view>
-						<view class="demo-shop">
-							{{item.shop}}
-						</view>
-						<u-icon name="close-circle-fill" color="#fa3534" size="34" class="u-close"
-							@click="remove(item.id)"></u-icon>
+		
+		<view class="fl_top">
+			<view class="fl_top_box">
+				<view class="fl_top_box_overlay">
+					<view class="fl_top_box_text">
+						川菜
 					</view>
-				</template>
-				<template v-slot:right="{rightList}">
-					<view class="demo-warter" v-for="(item, index) in rightList" :key="index">
-						<u-lazy-load threshold="-450" border-radius="10" :image="item.image" :index="index"></u-lazy-load>
-						<view class="demo-title">
-							{{item.title}}
-						</view>
-						<view class="demo-price">
-							{{item.price}}元
-						</view>
-						<view class="demo-tag">
-							<view class="demo-tag-owner">
-								自营
-							</view>
-							<view class="demo-tag-text">
-								放心购
-							</view>
-						</view>
-						<view class="demo-shop">
-							{{item.shop}}
-						</view>
-						<u-icon name="close-circle-fill" color="#fa3534" size="34" class="u-close"
-							@click="remove(item.id)"></u-icon>
+				</view>
+			</view>
+			
+			<view class="fl_top_box">
+				<view class="fl_top_box_overlay">
+					<view class="fl_top_box_text">
+						川菜
 					</view>
-				</template>
-			</u-waterfall>
-			<u-loadmore bg-color="rgb(240, 240, 240)" :status="loadStatus" @loadmore="addRandomData"></u-loadmore>
+				</view>
+			</view>
+			
+			<view class="fl_top_box">
+				<view class="fl_top_box_overlay">
+					<view class="fl_top_box_text">
+						川菜
+					</view>
+				</view>
+			</view>
+			
+			<view class="fl_top_box">
+				<view class="fl_top_box_overlay">
+					<view class="fl_top_box_text">
+						川菜
+					</view>
+				</view>
+			</view>
+			
 		</view>
+		
+		<view class="underline-container">
+			<view class="underline"></view>  
+		    <view class="underline-text">分类</view>
+		    <view class="underline"></view>
+		</view>
+		
+		
+		<view class="fl_btm">
+			<view class="fl_btm_box">
+				<view class="fl_btm_box_overlay">
+					<view class="fl_btm_box_text">
+						地方菜
+					</view>
+				</view>
+			</view>
+			
+			<view class="fl_btm_box">
+				<view class="fl_btm_box_overlay">
+					<view class="fl_btm_box_text">
+						新疆菜
+					</view>
+				</view>
+			</view>
+			
+			<view class="fl_btm_box">
+				<view class="fl_btm_box_overlay">
+					<view class="fl_btm_box_text">
+						粤菜
+					</view>
+				</view>
+			</view>
+			
+			<view class="fl_btm_box">
+				<view class="fl_btm_box_overlay">
+					<view class="fl_btm_box_text">
+						粤菜
+					</view>
+				</view>
+			</view>
+		</view>
+		
 	</view>
 </template>
 
@@ -156,79 +173,102 @@
 </script>
 
 <style lang="scss">
-	//分类栏
 	.tab-strickt {
 		position: sticky;
 		z-index: 99;
 		top: 0;
 		left: 0;
-		
-
-	}
-	//瀑布流
-	.demo-warter {
-		border-radius: 8px;
-		margin: 5px;
+		display: flex;
+		align-items: center;
 		background-color: #ffffff;
-		padding: 8px;
-		position: relative;
 	}
 	
-	.u-close {
-		position: absolute;
-		top: 32rpx;
-		right: 32rpx;
+	// 下划线
+	.underline-container {
+		margin-top: 25rpx;
+	  display: flex;  
+	  align-items: center;  
+	  margin-bottom: 20rpx;
+	}  
+	  
+	.underline-text {  
+	  color: #b2b2b2;
+	  background-color: white; /* 如果背景不是白色，需要设置这个 */  
+	  z-index: 1; /* 确保文字在下划线之上 */  
+	  position: relative;  
+	  letter-spacing: 5px;
+	  font-weight: 500;
+	  font-size: 30rpx
+	}  
+	  
+	.underline {  
+	  flex: 1;  
+	  height: 1rpx; /* 下划线高度 */  
+	  background-color: #b2b2b2; /* 下划线颜色 */  
+	  margin: 20rpx;
 	}
 	
-	.demo-image {
+	// 推荐分类
+	.fl_top{
+		display: flex;
+		flex-wrap: wrap;
+	}
+	.fl_top_box{
+		width: 44%;
+		height: 200rpx;
+		margin-left: 4%;
+		margin-top: 15rpx;
+		border-radius: 20rpx;
+		background-color: #07a8ff;
+	}
+	.fl_top_box_overlay{
+		display: flex;
 		width: 100%;
-		border-radius: 4px;
+		height: 200rpx;
+		border-radius: 20rpx;
+		/* 设置蒙版颜色及透明度 */
+		background-color: rgba(0, 0, 0, 0.5);
+	}
+	.fl_top_box_text{
+		color: white;
+		width: 55%;
+		height: 35%;
+		// background-color: aquamarine;
+		margin: auto;
+		text-align: center;
+		font-size: 48rpx;
+		letter-spacing: 20rpx;
+		font-weight: 600;
 	}
 	
-	.demo-title {
-		font-size: 30rpx;
-		margin-top: 5px;
-		color: $u-main-color;
-	}
-	
-	.demo-tag {
+	// 具体分类
+	.fl_btm{
 		display: flex;
-		margin-top: 5px;
+		flex-wrap: wrap;
 	}
-	
-	.demo-tag-owner {
-		background-color: $u-type-error;
-		color: #FFFFFF;
+	.fl_btm_box{
+		width: 30%;
+		height: 220rpx;
+		margin-left: 2.5%;
+		margin-top: 15rpx;
+		border-radius: 20rpx;
+		background-color: #07a8ff;
+	}
+	.fl_btm_box_overlay{
 		display: flex;
-		align-items: center;
-		padding: 4rpx 14rpx;
-		border-radius: 50rpx;
-		font-size: 20rpx;
-		line-height: 1;
+		width: 100%;
+		height: 220rpx;
+		border-radius: 20rpx;
+		/* 设置蒙版颜色及透明度 */
+		background: linear-gradient(to right bottom,rgba(0, 0, 0, 0.5),rgba(0, 0, 0, 0.1));
 	}
-	
-	.demo-tag-text {
-		border: 1px solid $u-type-primary;
-		color: $u-type-primary;
-		margin-left: 10px;
-		border-radius: 50rpx;
-		line-height: 1;
-		padding: 4rpx 14rpx;
-		display: flex;
-		align-items: center;
-		border-radius: 50rpx;
-		font-size: 20rpx;
-	}
-	
-	.demo-price {
-		font-size: 30rpx;
-		color: $u-type-error;
-		margin-top: 5px;
-	}
-	
-	.demo-shop {
-		font-size: 22rpx;
-		color: $u-tips-color;
-		margin-top: 5px;
+	.fl_btm_box_text{
+		padding-top: 20rpx;
+		padding-left: 20rpx;
+		color: white;
+		// background-color: aquamarine;
+		font-size: 32rpx;
+		letter-spacing: 5rpx;
+		font-weight: 500;
 	}
 </style>

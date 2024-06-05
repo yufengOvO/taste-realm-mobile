@@ -3,7 +3,10 @@ import http from "../common/http.js"
 export const categoryApi = (parm) =>{
 	return http.get('/api/category/getSelectList',parm)
 }
-
+//发布商品分类
+export const IgredcategoryApi = (parm) =>{
+	return http.get('/api/ingredients/getSelectList',parm)
+}
 // 发布页面发布商品
 export const releaseApi = (parm) => {
 	return http.post('/api/goods/release',parm)

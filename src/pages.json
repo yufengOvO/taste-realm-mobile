@@ -1,4 +1,12 @@
 {
+	
+		"easycom": {
+			"autoscan": true,
+			"custom": {
+				// uni-ui 规则如下配置
+				"^uni-(.*)": "@dcloudio/uni-ui/lib/uni-$1/uni-$1.vue"
+			}
+		},
 	"pages": [
 		//pages数组中第一项表示应用启动页，参考：https://uniapp.dcloud.io/collocation/pages
 		{
@@ -6,14 +14,7 @@
 			"style": {
 				"navigationBarTitleText": "首页"
 			}
-		}, {
-			"path": "pages/buy/buy",
-			"style": {
-				"navigationBarTitleText": "购买",
-				"enablePullDownRefresh": false
-			}
-
-		}, {
+		},  {
 			"path": "pages/mine/mine",
 			"style": {
 				"navigationBarTitleText": "我的",
@@ -23,14 +24,14 @@
 		}, {
 			"path": "pages/write/write",
 			"style": {
-				"navigationBarTitleText": "发布",
+				"navigationBarTitleText": "创作",
 				"enablePullDownRefresh": false
 			}
 
 		}, {
 			"path": "pages/unused/unused",
 			"style": {
-				"navigationBarTitleText": "闲置",
+				"navigationBarTitleText": "分类",
 				"enablePullDownRefresh": false
 			}
 		}, {
@@ -50,47 +51,58 @@
 			}
 
 		}
-	],
+        ,{
+            "path" : "pages/search/search",
+            "style" :                                                                                    
+            {
+                "navigationBarTitleText": "搜索",
+                "enablePullDownRefresh": false
+            }
+            
+        }
+		,{
+		    "path" : "pages/menu/menu",
+		    "style" :                                                                                    
+		    {
+		        "navigationBarTitleText": "菜谱详情",
+		        "enablePullDownRefresh": false
+		    }
+		    
+		}
+    ],
 	"globalStyle": {
-		"navigationBarTextStyle": "white",
+		"navigationBarTextStyle": "black",
 		"navigationBarTitleText": "uni-app",
-		"navigationBarBackgroundColor": "#33cc00",
+		"navigationBarBackgroundColor": "#d7d7d7",
 		"backgroundColor": "#F8F8F8"
 	},
 	// tabBar
 	"tabBar": {
-		"color": "#333333",
-		"selectedColor": "#00cc33",
-		"borderStyle": "black",
+		"color": "#d7d7d7",
+		"selectedColor": "#000000",
+		"borderStyle": "white",
 		"backgroundColor": "#ffffff",
 		"list": [{
 				"pagePath": "pages/index/index",
-				"iconPath": "static/home.png",
-				"selectedIconPath": "static/home_select.png",
+				"iconPath": "static/tab/shouye.png",
+				"selectedIconPath": "static/tab/shouye_select.png",
 				"text": "首页"
 			}, {
 				"pagePath": "pages/unused/unused",
-				"iconPath": "static/unused.png",
-				"selectedIconPath": "static/unused_select.png",
-				"text": "闲置"
+				"iconPath": "static/tab/fenlei.png",
+				"selectedIconPath": "static/tab/fenlei_select.png",
+				"text": "分类"
 			},
 			{
 				"pagePath": "pages/write/write",
-				"iconPath": "static/write.png",
-				"selectedIconPath": "static/write_select.png",
-				"text": "发布"
+				"iconPath": "static/tab/chunagzu.png",
+				"selectedIconPath": "static/tab/chunagzu_select.png",
+				"text": "创作"
 			},
-			{
-				"pagePath": "pages/buy/buy",
-				"iconPath": "static/buy.png",
-				"selectedIconPath": "static/buy_select.png",
-				"text": "求购"
-			},
-
 			{
 				"pagePath": "pages/mine/mine",
-				"iconPath": "static/mine.png",
-				"selectedIconPath": "static/mine_select.png",
+				"iconPath": "static/tab/me.png",
+				"selectedIconPath": "static/tab/me_select.png",
 				"text": "我的"
 			}
 
