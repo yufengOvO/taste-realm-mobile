@@ -84,7 +84,7 @@ export default {
 	props: {
 		// 图片地址
 		src: {
-			type: String,
+			type: [String,null],
 			default: ''
 		},
 		// 裁剪模式

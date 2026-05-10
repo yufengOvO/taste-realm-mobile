@@ -169,7 +169,7 @@ export default {
 	},
 	computed: {
 		valueCom() {
-			// #ifndef VUE3
+			// #ifdef VUE2
 			return this.value;
 			// #endif
 
@@ -244,8 +244,16 @@ export default {
 			this.$emit("change", index);
 			// 如果有配置pagePath属性，使用uni.switchTab进行跳转
 			if (this.list[index].pagePath) {
+				let url = this.list[index].pagePath;
 				uni.switchTab({
-					url: this.list[index].pagePath
+					url,
+					fail: (err) => {
+						if (err && err.errMsg && err.errMsg.indexOf("tabBar") > -1) {
+							uni.navigateTo({ url });
+						} else {
+							console.error(err);
+						}
+					}
 				});
 			} else {
 				// 如果配置了papgePath属性，将不会双向绑定v-model传入的value值

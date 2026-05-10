@@ -93,7 +93,8 @@ export default {
 	data() {
 		return {
 			parentDisabled: false,
-			newParams: {}
+			newParams: {},
+			parent: null
 		};
 	},
 	created() {
@@ -104,7 +105,7 @@ export default {
 	},
 	computed: {
 		valueCom() {
-			// #ifndef VUE3
+			// #ifdef VUE2
 			return this.value;
 			// #endif
 
@@ -227,6 +228,7 @@ export default {
 		// 设置input的值，这里通过input事件，设置通过v-model绑定的组件的值
 		setValue() {
 			let value = this.valueCom;
+
 			// 判断是否超过了可选的最大数量
 			let checkedNum = 0;
 			if (this.parent && this.parent.children) {

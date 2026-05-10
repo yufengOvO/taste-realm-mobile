@@ -21,9 +21,9 @@
 			:placeholder="placeholder"
 			:placeholderStyle="placeholderStyle"
 			:disabled="disabled"
-			:maxlength="inputMaxlength"
 			:fixed="fixed"
 			:focus="focus"
+			:maxlength="-1"
 			:autoHeight="autoHeight"
 			:selection-end="uSelectionEnd"
 			:selection-start="uSelectionStart"
@@ -38,14 +38,15 @@
 		<input
 			v-else
 			class="u-input__input"
+			:class="'u-input__' + type"
 			:type="type == 'password' ? 'text' : type"
 			:style="[getStyle]"
 			:value="defaultValue"
+			:maxlength="10000"
 			:password="type == 'password' && !showPassword"
 			:placeholder="placeholder"
 			:placeholderStyle="placeholderStyle"
-			:disabled="disabled || type === 'select'"
-			:maxlength="inputMaxlength"
+			:disabled="disabled || (type === 'select' && !showCover)"
 			:focus="focus"
 			:confirmType="confirmType"
 			:cursor-spacing="getCursorSpacing"
@@ -58,6 +59,7 @@
 			@input="handleInput"
 			@confirm="onConfirm"
 		/>
+		<view v-if="type === 'select' && showCover" class="cover-input" @tap.stop="inputClick"></view>
 		<view class="u-input__right-icon u-flex">
 			<view
 				class="u-input__right-icon__clear u-input__right-icon__item"
@@ -268,7 +270,8 @@ export default {
 			uForm:{
 				inputAlign: "",
 				clearable: ""
-			}
+			},
+			showCover: false
 		};
 	},
 	watch: {
@@ -281,11 +284,24 @@ export default {
 						value: nVal
 					}
 				});
+		},
+		defaultValue(nVal, oVal) {
+			// 如果有最大长度限制，且当前值的长度大于最大长度，则截取
+			if (nVal && nVal.length > this.maxlength) {
+				setTimeout(() => {
+					nVal = nVal.substring(0, this.maxlength);
+					this.handleInput({
+						detail: {
+							value: nVal
+						}
+					});
+				}, 0);
+			}
 		}
 	},
 	computed: {
 		valueCom() {
-			// #ifndef VUE3
+			// #ifdef VUE2
 			return this.value;
 			// #endif
 
@@ -331,7 +347,7 @@ export default {
 	},
 	created() {
 		// 监听u-form-item发出的错误事件，将输入框边框变红色
-		// #ifndef VUE3
+		// #ifdef VUE2
 		this.$on("onFormItemError", this.onFormItemError);
 		// #endif
 		this.defaultValue = this.valueCom;
@@ -343,6 +359,11 @@ export default {
 				this.uForm[key] = parent[key];
 			});
 		}
+		// #ifdef MP-ALIPAY
+		if (this.type === 'select') {
+			this.showCover = true;
+		}
+		// #endif
 	},
 	methods: {
 		/**
@@ -381,8 +402,9 @@ export default {
 			setTimeout(() => {
 				this.focused = false;
 			}, 100);
+			let value = event.detail.value;
 			// vue 原生的方法 return 出去
-			this.$emit("blur", event.detail.value);
+			this.$emit("blur", value);
 			setTimeout(() => {
 				// 头条小程序由于自身bug，导致中文下，每按下一个键(尚未完成输入)，都会触发一次@input，导致错误，这里进行判断处理
 				// #ifdef MP-TOUTIAO
@@ -390,7 +412,7 @@ export default {
 				this.lastValue = value;
 				// #endif
 				// 将当前的值发送到 u-form-item 进行校验
-				this.dispatch("u-form-item", "onFieldBlur", event.detail.value);
+				this.dispatch("u-form-item", "onFieldBlur", value);
 			}, 40);
 		},
 		onFormItemError(status) {
@@ -422,13 +444,18 @@ export default {
 	position: relative;
 	flex: 1;
 	@include vue-flex;
-
+	
 	&__input {
 		//height: $u-form-item-height;
 		font-size: 28rpx;
 		color: $u-main-color;
 		flex: 1;
 	}
+	/* #ifdef H5 */
+	&__select {
+		pointer-events: none;
+	}
+	/* #endif */
 
 	&__textarea {
 		width: auto;
@@ -461,6 +488,14 @@ export default {
 				transform: rotate(-180deg);
 			}
 		}
+	}
+	
+	.cover-input {
+		position: absolute;
+		top: 0;
+		left: 0;
+		right: 0;
+		bottom: 0;
 	}
 }
 </style>

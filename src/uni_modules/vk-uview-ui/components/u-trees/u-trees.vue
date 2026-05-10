@@ -123,20 +123,20 @@
 			this.init();
 		},
 		// #ifdef APP-PLUS
-    
-    // #ifndef VUE3
-    // 组件销毁前，将实例从u-form的缓存中移除
-    beforeDestroy() {
-      this.observer && this.observer.disconnect();
-    },
-    // #endif
-    
-    // #ifdef VUE3
-    beforeUnmount() {
-      this.observer && this.observer.disconnect();
-    },
-    // #endif
-    
+		
+		// #ifdef VUE2
+		// 组件销毁前，将实例从u-form的缓存中移除
+		beforeDestroy() {
+			this.observer && this.observer.disconnect();
+		},
+		// #endif
+		
+		// #ifdef VUE3
+		beforeUnmount() {
+			this.observer && this.observer.disconnect();
+		},
+		// #endif
+		
 		// #endif
 		methods: {
 			init() {
@@ -307,7 +307,7 @@
 				this.$set(this.ctrl, e.target.dataset.i, 0);
 			},
 			use(item) {
-				return !item.c && !inline[item.name] && (item.attrs.style || '').indexOf('display:inline') == -1
+				return !item.c && !inline[item.name] && (item.attrs && item.attrs.style || '').indexOf('display:inline') == -1
 			}
 		}
 	}

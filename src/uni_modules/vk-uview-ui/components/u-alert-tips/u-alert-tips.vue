@@ -12,7 +12,7 @@
 		</view>
 		<view class="u-alert-content" @click.stop="click">
 			<view class="u-alert-title" :style="[uTitleStyle]">
-				{{title}}
+				<slot>{{title}}</slot>
 			</view>
 			<view v-if="description" class="u-alert-desc" :style="[descStyle]">
 				{{description}}

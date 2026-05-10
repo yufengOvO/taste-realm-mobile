@@ -8,11 +8,18 @@
 			}
 		},
 	"pages": [
-		//pages数组中第一项表示应用启动页，参考：https://uniapp.dcloud.io/collocation/pages
+		{
+			"path": "pages/login/login",
+			"style": {
+				"navigationBarTitleText": "",
+				"enablePullDownRefresh": false
+			}
+		},
 		{
 			"path": "pages/index/index",
 			"style": {
-				"navigationBarTitleText": "首页"
+				"navigationBarTitleText": "首页",
+				"enablePullDownRefresh": true
 			}
 		},  {
 			"path": "pages/mine/mine",
@@ -29,21 +36,12 @@
 			}
 
 		}, {
-			"path": "pages/unused/unused",
+			"path": "pages/category/category",
 			"style": {
 				"navigationBarTitleText": "分类",
 				"enablePullDownRefresh": false
 			}
 		}, {
-			"path": "pages/login/login",
-			"style": {
-				"navigationBarTitleText": "",
-				"enablePullDownRefresh": false
-			}
-
-		}
-
-		, {
 			"path": "pages/register/register",
 			"style": {
 				"navigationBarTitleText": "",
@@ -61,13 +59,41 @@
             
         }
 		,{
-		    "path" : "pages/menu/menu",
+		    "path" : "pages/details/details",
 		    "style" :                                                                                    
 		    {
 		        "navigationBarTitleText": "菜谱详情",
 		        "enablePullDownRefresh": false
 		    }
 		    
+		},
+		{
+			"path" : "pages/categorysearch/categorysearch",
+			"style" : 
+			{
+				"navigationBarTitleText" : "分类搜索"
+			}
+		},
+		{
+			"path" : "pages/collection/collection",
+			"style" : 
+			{
+				"navigationBarTitleText" : "收藏"
+			}
+		},
+		{
+			"path" : "pages/userwirter/userwirter",
+			"style" : 
+			{
+				"navigationBarTitleText" : "我的发布"
+			}
+		},
+		{
+			"path" : "pages/update_password/update_password",
+			"style" : 
+			{
+				"navigationBarTitleText" : "修改密码"
+			}
 		}
     ],
 	"globalStyle": {
@@ -88,7 +114,7 @@
 				"selectedIconPath": "static/tab/shouye_select.png",
 				"text": "首页"
 			}, {
-				"pagePath": "pages/unused/unused",
+				"pagePath": "pages/category/category",
 				"iconPath": "static/tab/fenlei.png",
 				"selectedIconPath": "static/tab/fenlei_select.png",
 				"text": "分类"

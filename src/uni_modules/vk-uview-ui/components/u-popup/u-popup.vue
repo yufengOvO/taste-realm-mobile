@@ -221,7 +221,7 @@ export default {
 	},
 	computed: {
 		valueCom(){
-			// #ifndef VUE3
+			// #ifdef VUE2
 			return this.value;
 			// #endif
 			
@@ -292,7 +292,6 @@ export default {
 	},
 	watch: {
 		valueCom:{
-			immediate: true,
 			handler(val){
 				if (val) {
 					this.open();
@@ -305,7 +304,9 @@ export default {
 	},
 	mounted() {
 		// 组件渲染完成时，检查value是否为true，如果是，弹出popup
-		this.valueCom && this.open();
+		if (this.valueCom) {
+			this.open();
+		}
 	},
 	methods: {
 		// 判断传入的值，是否带有单位，如果没有，就默认用rpx单位

@@ -184,7 +184,7 @@
 			}, 30)
 			// #endif
 		},
-    // #ifndef VUE3
+    // #ifdef VUE2
     beforeDestroy() {
     	// #ifdef H5 || MP-360
     	if (this._observer) this._observer.disconnect();

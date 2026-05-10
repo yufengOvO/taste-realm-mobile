@@ -205,7 +205,7 @@ export default {
 			return this.zIndex ? this.zIndex : this.$u.zIndex.popup;
 		},
 		valueCom() {
-			// #ifndef VUE3
+			// #ifdef VUE2
 			return this.value;
 			// #endif
 		

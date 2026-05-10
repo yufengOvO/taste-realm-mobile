@@ -29,7 +29,7 @@
 			:previousMargin="$u.addUnit(previousMargin)"
 			:nextMargin="$u.addUnit(nextMargin)"
 			:acceleration="acceleration"
-			:displayMultipleItems="displayMultipleItems"
+			:displayMultipleItems="displayMultipleItemsCom"
 			:easingFunction="easingFunction"
 		>
 			<swiper-item
@@ -177,7 +177,7 @@
 		props: {
 			// 列表数组，元素可为字符串，如为对象可通过keyName指定目标属性名
 			list: {
-				type: Array,
+				type: [Array, null],
 				default () {
 					return [];
 				}
@@ -374,6 +374,14 @@
 				let { autoplay, currentIsVideoCom } = this;
 				return currentIsVideoCom ? false : autoplay;
 			},
+			displayMultipleItemsCom(){
+				let { displayMultipleItems, list } = this;
+				if (list && list.length > 0) {
+					return displayMultipleItems;
+				} else {
+					return 0
+				}
+			}
 		},
 		methods: {
       getItemType(item) {
