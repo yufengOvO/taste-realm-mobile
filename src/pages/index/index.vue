@@ -511,6 +511,7 @@
 	.u-close {
 		position: absolute;
 		bottom: 32rpx;
+		bottom: 32rpx;
 		right: 32rpx;
 	}
 
