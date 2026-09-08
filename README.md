@@ -190,5 +190,5 @@ API 接口地址配置在 `src/common/http.js` 文件中，可以根据环境修
 
 ## 相关项目
 
-- **网页端仓库**: [taste-realm](https://github.com/yufengOvO/taste-realm-web)
-- **后端仓库**: [zhuanzhuanuniapp](https://github.com/yufengOvO/taste-realm-api)
+- **网页端仓库**: [taste-realm-web](https://github.com/yufengOvO/taste-realm-web)
+- **后端仓库**: [taste-realm-api](https://github.com/yufengOvO/taste-realm-api)
