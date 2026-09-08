@@ -9,6 +9,7 @@
 ## 功能特性
 
 ### 核心功能
+
 - **首页推荐**：轮播图展示、经典美食推荐、分类浏览
 - **菜谱分类**：按食材、菜系等分类浏览
 - **搜索功能**：支持菜谱名称、食材等关键词搜索
@@ -19,6 +20,7 @@
 - **我的发布**：管理自己发布的菜谱
 
 ### 技术特性
+
 - 跨平台支持（H5、小程序、App）
 - 响应式设计，适配不同屏幕尺寸
 - 组件化开发，代码复用率高
@@ -77,11 +79,13 @@ zhuanzhuanuniapp/
 ## 安装与运行
 
 ### 环境要求
+
 - Node.js >= 14.0.0
 - npm >= 6.0.0 或 yarn >= 1.0.0
 - HBuilderX（推荐用于 uni-app 开发）
 
 ### 安装依赖
+
 ```bash
 npm install
 # 或
@@ -91,16 +95,19 @@ yarn install
 ### 运行项目
 
 #### H5 端
+
 ```bash
 npm run dev:h5
 ```
 
 #### 微信小程序
+
 ```bash
 npm run dev:mp-weixin
 ```
 
 #### App 端
+
 ```bash
 npm run dev:app
 ```
@@ -108,16 +115,19 @@ npm run dev:app
 ### 构建项目
 
 #### H5 端
+
 ```bash
 npm run build:h5
 ```
 
 #### 微信小程序
+
 ```bash
 npm run build:mp-weixin
 ```
 
 #### App 端
+
 ```bash
 npm run build:app
 ```
@@ -125,11 +135,14 @@ npm run build:app
 ## 配置说明
 
 ### API 配置
+
 API 接口地址配置在 `src/common/http.js` 文件中，可以根据环境修改：
+
 - 开发环境：本地或测试服务器地址
 - 生产环境：正式服务器地址
 
 ### 应用配置
+
 - `src/manifest.json`：应用名称、版本、权限等配置
 - `src/pages.json`：页面路由、导航栏、底部 Tab 配置
 
@@ -147,16 +160,19 @@ API 接口地址配置在 `src/common/http.js` 文件中，可以根据环境修
 ## 开发说明
 
 ### 添加新页面
+
 1. 在 `src/pages/` 目录下创建页面组件
 2. 在 `src/pages.json` 中添加页面路由
 3. 如需底部 Tab，在 `tabBar.list` 中配置
 
 ### API 接口开发
+
 1. 在 `src/api/` 目录下创建接口文件
 2. 使用 `src/common/http.js` 封装的请求方法
 3. 在页面中调用接口获取数据
 
 ### 组件使用
+
 项目使用 vk-uview-ui 组件库，具体组件用法参考 [uview 官方文档](https://uviewui.com/)
 
 ## 注意事项
@@ -168,15 +184,11 @@ API 接口地址配置在 `src/common/http.js` 文件中，可以根据环境修
 
 ## 更新日志
 
-### v1.0.0 (2024-01-01)
-- 项目初始化
-- 实现基础功能：登录、注册、首页、分类、搜索、详情、创作、收藏
-- 支持 H5、微信小程序、App 多端部署
-
 ## 许可证
 
 本项目仅供学习交流使用。
 
-## 联系方式
+## 相关项目
 
-如有问题或建议，请提交 Issue 或联系开发者。
+- **网页端仓库**: [taste-realm](https://github.com/yufengOvO/taste-realm-web)
+- **后端仓库**: [zhuanzhuanuniapp](https://github.com/yufengOvO/taste-realm-api)
